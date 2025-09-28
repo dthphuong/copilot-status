@@ -70,8 +70,8 @@
 
 ### Prerequisites
 - Node.js 16+ (for running the tracker)
-- GitHub CLI with Copilot extension (for actual usage tracking)
 - Git (for cloning the repository)
+- [GitHub Copilot CLI](https://github.com/features/copilot/cli/) for actual usage tracking
 
 ### Quick Setup (Recommended)
 
