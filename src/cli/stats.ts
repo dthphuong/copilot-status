@@ -1,5 +1,7 @@
 import chalk from 'chalk';
 import Table from 'cli-table3';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 import { SessionProcessor } from '../utils/session-processor.js';
 import { DailyStats } from '../utils/types.js';
 import { format } from 'date-fns';
@@ -7,6 +9,7 @@ import { format } from 'date-fns';
 interface StatsOptions {
   date: string;
   json?: boolean;
+  output?: string;
   verbose?: boolean;
 }
 
@@ -17,6 +20,11 @@ export async function statsCommand(options: StatsOptions) {
     console.log(chalk.cyan(`\n📊 GitHub Copilot Usage Stats for ${options.date}\n`));
 
     const stats = await processor.getUsageByDate(options.date);
+
+    // Handle output file export
+    if (options.output) {
+      await exportToJsonFile(stats, options.output, options.date);
+    }
 
     if (options.json) {
       console.log(JSON.stringify(stats, null, 2));
@@ -176,5 +184,42 @@ function formatDuration(seconds: number): string {
     return `${minutes}m ${remainingSeconds}s`;
   } else {
     return `${remainingSeconds}s`;
+  }
+}
+
+async function exportToJsonFile(stats: DailyStats, outputPath: string, date: string): Promise<void> {
+  try {
+    // Generate filename if not provided
+    let finalPath = outputPath;
+
+    // If outputPath is a directory (ends with / or doesn't have extension), create filename
+    if (outputPath.endsWith('/') || !outputPath.includes('.')) {
+      const fileName = `copilot-stats-${date}.json`;
+      finalPath = outputPath.endsWith('/') ? join(outputPath, fileName) : join(outputPath, fileName);
+    }
+
+    // Add .json extension if not present
+    if (!finalPath.endsWith('.json')) {
+      finalPath += '.json';
+    }
+
+    // Prepare data with metadata
+    const exportData = {
+      metadata: {
+        exportDate: new Date().toISOString(),
+        generatedBy: 'copilot-status',
+        version: '1.0.0',
+        statsDate: date
+      },
+      data: stats
+    };
+
+    // Write to file
+    writeFileSync(finalPath, JSON.stringify(exportData, null, 2));
+
+    console.log(chalk.green(`✅ Data exported to: ${finalPath}`));
+  } catch (error) {
+    console.error(chalk.red('❌ Failed to export data:'), error);
+    throw error;
   }
 }

@@ -16,6 +16,7 @@ program
     .argument('[date]', 'Date to show stats for (YYYY-MM-DD)', new Date().toISOString().split('T')[0])
     .option('-d, --date <date>', 'Date to show stats for (YYYY-MM-DD)')
     .option('-j, --json', 'Output in JSON format')
+    .option('-o, --output <path>', 'Export JSON data to file (default: current directory)')
     .option('-v, --verbose', 'Show detailed information')
     .action((date, options) => {
     const finalDate = options.date || date;

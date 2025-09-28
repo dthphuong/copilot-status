@@ -1,11 +1,16 @@
 import chalk from 'chalk';
 import Table from 'cli-table3';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 import { SessionProcessor } from '../utils/session-processor.js';
 export async function statsCommand(options) {
     const processor = new SessionProcessor();
     try {
         console.log(chalk.cyan(`\n📊 GitHub Copilot Usage Stats for ${options.date}\n`));
         const stats = await processor.getUsageByDate(options.date);
+        if (options.output) {
+            await exportToJsonFile(stats, options.output, options.date);
+        }
         if (options.json) {
             console.log(JSON.stringify(stats, null, 2));
             return;
@@ -122,5 +127,32 @@ function formatDuration(seconds) {
     }
     else {
         return `${remainingSeconds}s`;
+    }
+}
+async function exportToJsonFile(stats, outputPath, date) {
+    try {
+        let finalPath = outputPath;
+        if (outputPath.endsWith('/') || !outputPath.includes('.')) {
+            const fileName = `copilot-stats-${date}.json`;
+            finalPath = outputPath.endsWith('/') ? join(outputPath, fileName) : join(outputPath, fileName);
+        }
+        if (!finalPath.endsWith('.json')) {
+            finalPath += '.json';
+        }
+        const exportData = {
+            metadata: {
+                exportDate: new Date().toISOString(),
+                generatedBy: 'copilot-status',
+                version: '1.0.0',
+                statsDate: date
+            },
+            data: stats
+        };
+        writeFileSync(finalPath, JSON.stringify(exportData, null, 2));
+        console.log(chalk.green(`✅ Data exported to: ${finalPath}`));
+    }
+    catch (error) {
+        console.error(chalk.red('❌ Failed to export data:'), error);
+        throw error;
     }
 }

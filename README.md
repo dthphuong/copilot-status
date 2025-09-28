@@ -27,6 +27,11 @@ npm start stats --json
 # View usage for a specific date
 npm start stats --date 2024-01-15
 
+# Export usage data to JSON file
+npm start stats --output ./usage-data.json
+
+# Export usage for specific date
+npm start stats --date 2024-01-15 --output ./jan-15-stats.json
 
 # Launch the live dashboard
 npm start dashboard --compact
@@ -99,9 +104,11 @@ copilot-status stats --date 2024-01-15 --verbose
 ```
 
 **Options:**
-- `--date <YYYY-MM-DD>`: Date to analyze (default: today)
-- `--json`: Output raw JSON data
-- `--verbose`: Show detailed breakdowns and charts
+- `[date]`: Date to analyze (YYYY-MM-DD) (default: today)
+- `-d, --date <YYYY-MM-DD>`: Date to analyze (default: today)
+- `-j, --json`: Output raw JSON data
+- `-o, --output <path>`: Export JSON data to file (default: current directory)
+- `-v, --verbose`: Show detailed breakdowns and charts
 
 **Example Output:**
 ```
@@ -132,6 +139,43 @@ Messages: ████░░░░░░░░░░░░░░░░░░ 42
 
 📈 Hourly Breakdown:
 Peak usage: 14:00 with 8 prompts
+```
+
+**Export Examples:**
+```bash
+# Export to current directory (auto-generates filename)
+copilot-status stats --output ./
+
+# Export to specific file
+copilot-status stats --output ./my-stats.json
+
+# Export to directory (creates filename automatically)
+copilot-status stats --output ./reports/
+
+# Export with date filtering
+copilot-status stats 2024-01-15 --output ./january-stats.json
+
+# Export and display JSON
+copilot-status stats --output ./backup.json --json
+```
+
+**Generated File Format:**
+```json
+{
+  "metadata": {
+    "exportDate": "2025-09-28T14:30:57.547Z",
+    "generatedBy": "copilot-status",
+    "version": "1.0.0",
+    "statsDate": "2024-01-15"
+  },
+  "data": {
+    "date": "2024-01-15",
+    "totalPrompts": 42,
+    "totalTokens": 12847,
+    "totalCost": 0.1824,
+    ...
+  }
+}
 ```
 
 ### `copilot-status dashboard`
