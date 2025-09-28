@@ -13,14 +13,12 @@ program
 program
     .command('stats')
     .description('Show current day usage statistics')
-    .argument('[date]', 'Date to show stats for (YYYY-MM-DD)', new Date().toISOString().split('T')[0])
-    .option('-d, --date <date>', 'Date to show stats for (YYYY-MM-DD)')
+    .option('-d, --date <date>', 'Date to show stats for (YYYY-MM-DD)', new Date().toISOString().split('T')[0])
     .option('-j, --json', 'Output in JSON format')
     .option('-o, --output <path>', 'Export JSON data to file (default: current directory)')
     .option('-v, --verbose', 'Show detailed information')
-    .action((date, options) => {
-    const finalDate = options.date || date;
-    statsCommand({ ...options, date: finalDate });
+    .action((options) => {
+    statsCommand(options);
 });
 program
     .command('dashboard')
@@ -38,9 +36,10 @@ if (!process.argv.slice(2).length) {
     console.log(chalk.cyan('🤖 GitHub Copilot CLI Usage Tracker\n'));
     program.outputHelp();
     console.log(`\n${chalk.gray('Examples:')}`);
-    console.log(chalk.gray('  copilot-status stats              # Show today\'s usage'));
-    console.log(chalk.gray('  copilot-status stats --date 2024-01-15  # Show specific date'));
-    console.log(chalk.gray('  copilot-status dashboard          # Live dashboard'));
-    console.log(chalk.gray('  copilot-status track              # Start background tracking'));
+    console.log(chalk.gray('  npm start -- stats                    # Show today\'s usage'));
+    console.log(chalk.gray('  npm start -- stats --date 2024-01-15   # Show specific date'));
+    console.log(chalk.gray('  npm start -- stats --output data.json  # Export data'));
+    console.log(chalk.gray('  npm start -- dashboard                 # Live dashboard'));
+    console.log(chalk.gray('  npm start -- track                    # Start background tracking'));
 }
 program.parse(process.argv);
