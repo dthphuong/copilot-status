@@ -12,34 +12,6 @@
 
 </div>
 
-## ⚡ Quick Start
-
-```bash
-# Install dependencies and build
-npm install && npm run build
-
-# View today's usage statistics (from actual Copilot session data)
-npm start stats --verbose
-
-# View usage in JSON format
-npm start stats --json
-
-# View usage for a specific date
-npm start stats --date 2024-01-15
-
-# Export usage data to JSON file
-npm start stats --output ./usage-data.json
-
-# Export usage for specific date
-npm start stats --date 2024-01-15 --output ./jan-15-stats.json
-
-# Launch the live dashboard
-npm start dashboard --compact
-
-# Start background usage tracking
-npm start track
-```
-
 ## 📋 Features
 
 ### 🔧 Core Functionality
@@ -94,6 +66,142 @@ npm start track
   11 12 13 14 15 16 17 18 19 20 21 22
 ```
 
+## 🚀 Installation & Setup
+
+### Prerequisites
+- Node.js 16+ (for running the tracker)
+- GitHub CLI with Copilot extension (for actual usage tracking)
+- Git (for cloning the repository)
+
+### Quick Setup (Recommended)
+
+Clone, install, build, and setup the `copilot-status` command for use anywhere:
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/copilot-status.git
+cd copilot-status
+
+# Install dependencies and build
+npm install && npm run build
+
+# Link globally for use anywhere (recommended)
+npm link
+
+# Verify installation
+copilot-status --help
+```
+
+After running this setup, you can use `copilot-status` from any directory:
+
+```bash
+# From any directory
+copilot-status stats --verbose
+copilot-status dashboard --compact
+copilot-status track
+```
+
+### Alternative Installation Methods
+
+#### Local Development
+```bash
+git clone https://github.com/your-username/copilot-status.git
+cd copilot-status
+npm install
+npm run build
+
+# Use via npm start (requires --)
+npm start -- stats --verbose
+```
+
+#### Global Installation via npm
+```bash
+npm install -g copilot-status
+copilot-status --help
+```
+
+#### Manual Global Setup
+```bash
+git clone https://github.com/your-username/copilot-status.git
+cd copilot-status
+npm install
+npm run build
+
+# Create global symlink
+sudo ln -sf $(pwd)/dist/index.js /usr/local/bin/copilot-status
+chmod +x /usr/local/bin/copilot-status
+```
+
+### GitHub Copilot CLI Setup
+```bash
+# Install GitHub CLI
+brew install gh  # or your package manager
+
+# Install Copilot extension
+gh extension install github/gh-copilot
+
+# Test Copilot
+gh copilot suggest "hello world in Python"
+```
+
+### Uninstallation
+
+To remove the global command:
+
+```bash
+# If installed via npm link
+npm unlink -g copilot-status
+
+# If installed via npm global
+npm uninstall -g copilot-status
+
+# If manually installed
+sudo rm /usr/local/bin/copilot-status
+```
+
+## ⚡ Quick Start
+
+### After Installation (Global Command)
+
+Once installed globally, you can use `copilot-status` from anywhere:
+
+```bash
+# View today's usage statistics
+copilot-status stats --verbose
+
+# View usage in JSON format
+copilot-status stats --json
+
+# View usage for a specific date
+copilot-status stats --date 2024-01-15
+
+# Export usage data to JSON file
+copilot-status stats --output ./usage-data.json
+
+# Export usage for specific date
+copilot-status stats --date 2024-01-15 --output ./jan-15-stats.json
+
+# Launch the live dashboard
+copilot-status dashboard --compact
+
+# Start background usage tracking
+copilot-status track
+```
+
+### Local Development
+
+If you haven't installed globally or are developing locally:
+
+```bash
+# Install dependencies and build
+npm install && npm run build
+
+# Use commands with npm start (requires --)
+npm start -- stats --verbose
+npm start -- dashboard --compact
+npm start -- track
+```
+
 ## 🛠️ Commands
 
 ### `copilot-status stats`
@@ -104,79 +212,10 @@ copilot-status stats --date 2024-01-15 --verbose
 ```
 
 **Options:**
-- `[date]`: Date to analyze (YYYY-MM-DD) (default: today)
 - `-d, --date <YYYY-MM-DD>`: Date to analyze (default: today)
 - `-j, --json`: Output raw JSON data
 - `-o, --output <path>`: Export JSON data to file (default: current directory)
 - `-v, --verbose`: Show detailed breakdowns and charts
-
-**Example Output:**
-```
-📊 GitHub Copilot Usage Stats for 2024-01-15
-
-╔══════════════════════════╤═══════════╗
-║ 📝 Total Prompts         │ 42        ║
-║ 🎯 Tokens Used           │ 12,847    ║
-║ 💰 Total Cost            │ $0.1824   ║
-║ ⚡ Avg Response Time     │ 1.65s     ║
-║ 💵 Cost per Prompt       │ $0.004343 ║
-║ 🔄 Unique Sessions       │ 6         ║
-║ 📊 Avg Prompt Tokens     │ 306       ║
-║ ✨ Avg Completion Tokens │ 12,541    ║
-╚══════════════════════════╧═══════════╝
-
-🤖 Model Usage:
-┌─────────────────┬──────────┬────────────┐
-│ Model           │ Requests │ Percentage │
-├─────────────────┼──────────┼────────────┤
-│ github-copilot  │ 42       │ 100.0%     │
-└─────────────────┴──────────┴────────────┘
-
-📊 Usage Visualization:
-Tokens: ███████████████████████████░░░ 12,847
-Duration: 5h 53m 25s
-Messages: ████░░░░░░░░░░░░░░░░░░ 42
-
-📈 Hourly Breakdown:
-Peak usage: 14:00 with 8 prompts
-```
-
-**Export Examples:**
-```bash
-# Export to current directory (auto-generates filename)
-copilot-status stats --output ./
-
-# Export to specific file
-copilot-status stats --output ./my-stats.json
-
-# Export to directory (creates filename automatically)
-copilot-status stats --output ./reports/
-
-# Export with date filtering
-copilot-status stats 2024-01-15 --output ./january-stats.json
-
-# Export and display JSON
-copilot-status stats --output ./backup.json --json
-```
-
-**Generated File Format:**
-```json
-{
-  "metadata": {
-    "exportDate": "2025-09-28T14:30:57.547Z",
-    "generatedBy": "copilot-status",
-    "version": "1.0.0",
-    "statsDate": "2024-01-15"
-  },
-  "data": {
-    "date": "2024-01-15",
-    "totalPrompts": 42,
-    "totalTokens": 12847,
-    "totalCost": 0.1824,
-    ...
-  }
-}
-```
 
 ### `copilot-status dashboard`
 Launch an interactive real-time dashboard with live metrics.
@@ -276,38 +315,6 @@ Usage data is stored as newline-delimited JSON (NDJSON):
 }
 ```
 
-## 🚀 Installation & Setup
-
-### Prerequisites
-- Node.js 16+ (for running the tracker)
-- GitHub CLI with Copilot extension (for actual usage tracking)
-
-### Local Installation
-```bash
-git clone <repository-url>
-cd copilot-status
-npm install
-npm run build
-```
-
-### Global Installation
-```bash
-npm install -g copilot-status
-copilot-status --help
-```
-
-### GitHub Copilot CLI Setup
-```bash
-# Install GitHub CLI
-brew install gh  # or your package manager
-
-# Install Copilot extension
-gh extension install github/gh-copilot
-
-# Test Copilot
-gh copilot suggest "hello world in Python"
-```
-
 ## 🎨 Example Workflows
 
 ### Daily Usage Review
@@ -393,7 +400,7 @@ estimateTokens(sessionData) {
 }
 ```
 
-### Building
+### Build Commands
 ```bash
 npm run build    # Compile TypeScript
 npm run dev      # Watch mode for development
@@ -402,8 +409,17 @@ npm run dev      # Watch mode for development
 ### Testing
 ```bash
 npm test         # Run help command test
-npm start stats --verbose  # Test statistics
+
+# Test global command (after npm link)
+copilot-status stats --verbose
+
+# Test local development
+npm start -- stats --verbose
 ```
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🤝 Contributing
 
@@ -423,10 +439,6 @@ cd copilot-status
 npm install
 npm run build
 ```
-
-## 📄 License
-
-MIT License - see [LICENSE](LICENSE) file for details.
 
 ## 🎯 Roadmap
 
