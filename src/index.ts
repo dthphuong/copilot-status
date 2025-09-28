@@ -18,10 +18,15 @@ program
 program
   .command('stats')
   .description('Show current day usage statistics')
-  .option('-d, --date <date>', 'Date to show stats for (YYYY-MM-DD)', new Date().toISOString().split('T')[0])
+  .argument('[date]', 'Date to show stats for (YYYY-MM-DD)', new Date().toISOString().split('T')[0])
+  .option('-d, --date <date>', 'Date to show stats for (YYYY-MM-DD)')
   .option('-j, --json', 'Output in JSON format')
   .option('-v, --verbose', 'Show detailed information')
-  .action(statsCommand);
+  .action((date, options) => {
+  // Use the --date option if provided, otherwise use the positional argument
+  const finalDate = options.date || date;
+  statsCommand({ ...options, date: finalDate });
+});
 
 program
   .command('dashboard') 
