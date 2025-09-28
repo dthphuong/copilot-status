@@ -1,0 +1,40 @@
+{
+  "name": "copilot-status",
+  "version": "1.0.0",
+  "description": "A beautiful, informative console app to visualize GitHub Copilot CLI usage statistics",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "copilot-status": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "npx --package=typescript tsc",
+    "dev": "npx --package=typescript tsc --watch",
+    "start": "node dist/index.js",
+    "test": "npm run build && node dist/index.js --help"
+  },
+  "keywords": [
+    "github-copilot",
+    "copilot-cli",
+    "usage-tracking",
+    "token-visualization",
+    "ai-usage",
+    "cli-tool",
+    "analytics"
+  ],
+  "author": "Phuong Duong",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^5.6.2",
+    "cli-table3": "^0.6.5",
+    "commander": "^14.0.1",
+    "date-fns": "^4.1.0",
+    "inquirer": "^12.9.6",
+    "ora": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/inquirer": "^9.0.9",
+    "@types/node": "^24.5.2",
+    "typescript": "^5.9.2"
+  }
+}
