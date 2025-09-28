@@ -27,8 +27,6 @@ npm start stats --json
 # View usage for a specific date
 npm start stats --date 2024-01-15
 
-# Generate demo data to see the tracker in action
-npm start demo
 
 # Launch the live dashboard
 npm start dashboard --compact
@@ -93,22 +91,11 @@ npm start track
 
 ## 🛠️ Commands
 
-### `copilot-usage demo`
-Generate realistic demo data for testing and demonstration.
-
-```bash
-copilot-usage demo --days 7 --file ./demo-usage.log
-```
-
-**Options:**
-- `--days <number>`: Number of days of demo data (default: 7)
-- `--file <path>`: Output log file path (default: ./copilot-usage.log)
-
-### `copilot-usage stats`
+### `copilot-status stats`
 Display comprehensive usage statistics for a specific day.
 
 ```bash
-copilot-usage stats --date 2024-01-15 --verbose
+copilot-status stats --date 2024-01-15 --verbose
 ```
 
 **Options:**
@@ -147,11 +134,11 @@ Messages: ████░░░░░░░░░░░░░░░░░░ 42
 Peak usage: 14:00 with 8 prompts
 ```
 
-### `copilot-usage dashboard`
+### `copilot-status dashboard`
 Launch an interactive real-time dashboard with live metrics.
 
 ```bash
-copilot-usage dashboard --interval 30 --compact
+copilot-status dashboard --interval 30 --compact
 ```
 
 **Options:**
@@ -166,15 +153,15 @@ copilot-usage dashboard --interval 30 --compact
 - 📈 Mini activity charts
 - 🎨 Color-coded performance indicators
 
-### `copilot-usage track`
+### `copilot-status track`
 Start background tracking of Copilot CLI usage.
 
 ```bash
-copilot-usage track --file ./usage.log --interval 60
+copilot-status track --file ./usage.log --interval 60
 ```
 
 **Options:**
-- `--file <path>`: Log file location (default: ./copilot-usage.log)
+- `--file <path>`: Log file location (default: ./copilot-status.log)
 - `--interval <seconds>`: Check interval (default: 60)
 
 **Note:** Now analyzes actual GitHub Copilot CLI session data from `~/.copilot/history-session-state/`:
@@ -254,15 +241,15 @@ Usage data is stored as newline-delimited JSON (NDJSON):
 ### Local Installation
 ```bash
 git clone <repository-url>
-cd copilot-usage-tracker
+cd copilot-status
 npm install
 npm run build
 ```
 
 ### Global Installation
 ```bash
-npm install -g copilot-usage-tracker
-copilot-usage --help
+npm install -g copilot-status
+copilot-status --help
 ```
 
 ### GitHub Copilot CLI Setup
@@ -282,32 +269,32 @@ gh copilot suggest "hello world in Python"
 ### Daily Usage Review
 ```bash
 # Check yesterday's usage
-copilot-usage stats --date $(date -d "yesterday" +%Y-%m-%d) --verbose
+copilot-status stats --date $(date -d "yesterday" +%Y-%m-%d) --verbose
 
 # View this week's pattern
 for i in {0..6}; do
   date=$(date -d "-$i days" +%Y-%m-%d)
   echo "=== $date ==="
-  copilot-usage stats --date $date | grep "Total Prompts\|Total Cost"
+  copilot-status stats --date $date | grep "Total Prompts\|Total Cost"
 done
 ```
 
 ### Live Monitoring
 ```bash
 # Start tracking in background
-copilot-usage track &
+copilot-status track &
 
 # Launch dashboard in another terminal
-copilot-usage dashboard --compact
+copilot-status dashboard --compact
 
 # View real-time logs
-tail -f copilot-usage.log | jq .
+tail -f copilot-status.log | jq .
 ```
 
 ### Cost Analysis
 ```bash
 # Generate monthly report
-copilot-usage stats --json | jq '{
+copilot-status stats --json | jq '{
   date: .date,
   cost: .totalCost,
   prompts: .totalPrompts,
@@ -321,7 +308,6 @@ copilot-usage stats --json | jq '{
 ```
 src/
 ├── cli/               # Command implementations
-│   ├── demo.ts       # Demo data generation
 │   ├── stats.ts      # Statistics display
 │   ├── dashboard.ts  # Live dashboard
 │   └── track.ts      # Background tracking
@@ -372,7 +358,6 @@ npm run dev      # Watch mode for development
 ### Testing
 ```bash
 npm test         # Run help command test
-npm start demo   # Generate test data
 npm start stats --verbose  # Test statistics
 ```
 
@@ -390,10 +375,9 @@ We welcome contributions! Here are some areas where you can help:
 ### Development Setup
 ```bash
 git clone <repository>
-cd copilot-usage-tracker
+cd copilot-status
 npm install
 npm run build
-npm start demo  # Generate test data
 ```
 
 ## 📄 License
@@ -406,7 +390,6 @@ MIT License - see [LICENSE](LICENSE) file for details.
 - [x] Basic usage tracking simulation
 - [x] Statistics display with tables and charts
 - [x] Live dashboard with real-time updates
-- [x] Demo data generation
 - [x] JSON data persistence
 
 ### Phase 2: Real Integration ✅

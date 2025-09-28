@@ -136,7 +136,7 @@ export class CopilotTracker {
                 const { stdout } = await execAsync('ps aux | grep -E "\\bcopilot\\b" | grep -v grep');
                 const processes = stdout.split('\n').filter(line => line.includes('copilot') &&
                     !line.includes('grep') &&
-                    !line.includes('copilot-usage'));
+                    !line.includes('copilot-status'));
                 for (const processLine of processes) {
                     await this.handleDetectedProcess(processLine, callback);
                 }

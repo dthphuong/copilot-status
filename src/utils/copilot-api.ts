@@ -196,7 +196,7 @@ export class CopilotTracker {
         const processes = stdout.split('\n').filter(line => 
           line.includes('copilot') && 
           !line.includes('grep') &&
-          !line.includes('copilot-usage') // Don't track our own process
+          !line.includes('copilot-status') // Don't track our own process
         );
         
         for (const processLine of processes) {
